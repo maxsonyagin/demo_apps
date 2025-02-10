@@ -1,4 +1,5 @@
 import router from '@ohos.router'
+import { WaterFlowDataSource } from './WaterFlowDataSource'
 import {
   AnimationDurationProperty,
   AnimationModeProperty,
@@ -63,7 +64,25 @@ struct Index {
   @State selectedFontColor: string = '#007DFF'
   @State currentIndex: number = 0
   @State selectedIndex: number = 0
+  @State minSize: number = 80
+  @State maxSize: number = 100
+  @State colors: number[] = [0xFFC0CB, 0xDA70D6, 0x6B8E23, 0x6A5ACD, 0x00FFFF, 0x00FF7F]
+  dataSource: WaterFlowDataSource = new WaterFlowDataSource()
+  private itemWidthArray: number[] = []
+  private itemHeightArray: number[] = []
   private controller: TabsController = new TabsController()
+
+  // Set the width and height array of the water flow item.
+  setItemSizeArray() {
+    for (let i = 0; i < 9; i++) {
+      this.itemWidthArray.push(this.maxSize)
+      this.itemHeightArray.push(this.maxSize)
+    }
+  }
+
+  aboutToAppear() {
+    this.setItemSizeArray()
+  }
 
   getBarPosition(): BarPosition | undefined {
     switch (this.BarPositionAttr) {
@@ -279,14 +298,7 @@ struct Index {
             .edgeEffect(EdgeEffect.Spring) // Set the edge scrolling effect to Spring.
           }.width('100%').height('100%')
 
-        }.tabBar(this.tabBuilder(0, 'list1'))
-
-        TabContent() {
-          Column(){
-            this.tabContentBuilder()
-          }.width('100%').height('100%')
-
-        }.tabBar(this.tabBuilder(1, 'scroll1')).backgroundColor('#8000FF')
+        }.tabBar(this.tabBuilder(0, 'l1'))
 
         TabContent() {
           Column(){
@@ -299,11 +311,18 @@ struct Index {
               }, (item: string) => item)
             }.margin({top:"30vp"})
             .listDirection(Axis.Vertical) // Arrangement direction
-            .scrollBar(BarState.Off)
+            .scrollBar(BarState.On)
             .edgeEffect(EdgeEffect.Spring) // Set the edge scrolling effect to Spring.
           }
           .width('100%').height('100%').backgroundColor('#FFBF00')
-        }.tabBar(this.tabBuilder(2, 'list2'))
+        }.tabBar(this.tabBuilder(1, 'l2'))
+
+        TabContent() {
+          Column(){
+            this.tabContentBuilder()
+          }.width('100%').height('100%')
+
+        }.tabBar(this.tabBuilder(2, 's1')).backgroundColor('#8000FF')
 
         TabContent() {
           Column(){
@@ -325,7 +344,99 @@ struct Index {
             .edgeEffect(EdgeEffect.Spring)
             .scrollBar(BarState.Off)
           }.width('100%').height('100%').backgroundColor('#E67C92')
-        }.tabBar(this.tabBuilder(3, 'scroll2'))
+        }.tabBar(this.tabBuilder(3, 's2'))
+        TabContent() {
+          Column(){
+            Grid() {
+              ForEach(['0', '1', '2'], (day: string) => {
+                ForEach(['0', '1', '2', '3', '4'], (day: string) => {
+                  GridItem() {
+                    Text(day)
+                      .fontSize(16)
+                      .backgroundColor(0xF9CF93)
+                      .width('100%')
+                      .height(80)
+                      .textAlign(TextAlign.Center)
+                  }.margin({bottom:120})
+                }, (day: string) => day)
+              }, (day: string) => day)
+            }
+            .columnsTemplate('1fr 1fr 1fr 1fr 1fr')
+            .columnsGap(10)
+            .rowsGap(40)
+            .edgeEffect(EdgeEffect.Spring)
+            .scrollBar(BarState.Off)
+          }.width('100%').height('100%')
+        }.tabBar(this.tabBuilder(4, 'g1'))
+        TabContent() {
+          Column(){
+            Grid() {
+              ForEach(['0', '1', '2', '3', '4'], (day: string) => {
+                ForEach(['0', '1', '2', '3', '4'], (day: string) => {
+                  GridItem() {
+                    Text(day)
+                      .fontSize(16)
+                      .backgroundColor(0xF9CF93)
+                      .width('100%')
+                      .height(80)
+                      .textAlign(TextAlign.Center)
+                  }.margin({top:120})
+                }, (day: string) => day)
+              }, (day: string) => day)
+            }
+            .columnsTemplate('1fr 1fr 1fr 1fr 1fr')
+            .columnsGap(10)
+            .rowsGap(40)
+            .edgeEffect(EdgeEffect.Spring)
+            .scrollBar(BarState.On)
+          }.width('100%').height('100%')
+        }.tabBar(this.tabBuilder(5, 'g2'))
+        TabContent() {
+          Column({ space: 2 }) {
+            WaterFlow() {
+              LazyForEach(this.dataSource, (item: number) => {
+                FlowItem() {
+                  Column() {
+                    Text("N" + item).fontSize(12).height('16')
+                    Image('res/waterFlowTest(' + item % 5 + ').jpg')
+                  }
+                }.margin({bottom:100})
+                .width('100%')
+                .height(this.itemHeightArray[item % 100])
+                .backgroundColor(this.colors[item % 5])
+              }, (item: string) => item)
+            }
+            .columnsTemplate('repeat(auto-fill,80)')
+            .columnsGap(10)
+            .rowsGap(30)
+            .padding({left:5})
+            .backgroundColor(0xFAEEE0)
+            .edgeEffect(EdgeEffect.Spring)
+          }.width('100%').height('100%')
+        }.tabBar(this.tabBuilder(6, 'w1'))
+        TabContent() {
+          Column({ space: 2 }) {
+            WaterFlow() {
+              LazyForEach(this.dataSource, (item: number) => {
+                FlowItem() {
+                  Column() {
+                    Text("N" + item).fontSize(12).height('16')
+                    Image('res/waterFlowTest(' + item % 5 + ').jpg')
+                  }
+                }.margin({top:100})
+                .width('100%')
+                .height(this.itemHeightArray[item % 100])
+                .backgroundColor(this.colors[item % 5])
+              }, (item: string) => item)
+            }
+            .columnsTemplate('repeat(auto-fill,80)')
+            .columnsGap(10)
+            .rowsGap(30)
+            .padding({left:5})
+            .backgroundColor(0xFAEEE0)
+            .edgeEffect(EdgeEffect.Spring)
+          }.width('100%').height('100%')
+        }.tabBar(this.tabBuilder(7, 'w2'))
       }
       .vertical(this.VerticalAttr === 'true'? true : false)
       .scrollable(this.ScrollableAttr === 'true'? true : false)
