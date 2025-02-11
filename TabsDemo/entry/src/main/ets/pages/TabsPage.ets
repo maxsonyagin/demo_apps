@@ -357,7 +357,7 @@ struct Index {
                       .width('100%')
                       .height(80)
                       .textAlign(TextAlign.Center)
-                  }.margin({bottom:120})
+                  }.margin({bottom:130})
                 }, (day: string) => day)
               }, (day: string) => day)
             }
@@ -380,7 +380,7 @@ struct Index {
                       .width('100%')
                       .height(80)
                       .textAlign(TextAlign.Center)
-                  }.margin({top:120})
+                  }.margin({top:130})
                 }, (day: string) => day)
               }, (day: string) => day)
             }
@@ -400,7 +400,7 @@ struct Index {
                     Text("N" + item).fontSize(12).height('16')
                     Image('res/waterFlowTest(' + item % 5 + ').jpg')
                   }
-                }.margin({bottom:100})
+                }.margin({bottom:120})
                 .width('100%')
                 .height(this.itemHeightArray[item % 100])
                 .backgroundColor(this.colors[item % 5])
@@ -423,7 +423,7 @@ struct Index {
                     Text("N" + item).fontSize(12).height('16')
                     Image('res/waterFlowTest(' + item % 5 + ').jpg')
                   }
-                }.margin({top:100})
+                }.margin({top:120})
                 .width('100%')
                 .height(this.itemHeightArray[item % 100])
                 .backgroundColor(this.colors[item % 5])
@@ -437,6 +437,184 @@ struct Index {
             .edgeEffect(EdgeEffect.Spring)
           }.width('100%').height('100%')
         }.tabBar(this.tabBuilder(7, 'w2'))
+        TabContent() {
+          Column(){
+            List({initialIndex: 0 }) {
+              ForEach([0, 1], (item: number) => {
+                ListItem() {
+                  Row(){
+                    Text('' + item)
+                      .width('40%').height(220).fontSize(16)
+                      .textAlign(TextAlign.Center).borderRadius(10).backgroundColor(Color.Green)
+                    Text('' + item)
+                      .width('40%').height(220).fontSize(16)
+                      .textAlign(TextAlign.Center).borderRadius(10).backgroundColor(Color.Green)
+                      .margin({left:"30vp"})
+                  }
+                }.margin({top:56, bottom:90})
+              }, (item: string) => item)
+            }
+            .listDirection(Axis.Vertical) // Arrangement direction
+            .scrollBar(BarState.Off)
+            .edgeEffect(EdgeEffect.Spring) // Set the edge scrolling effect to Spring.
+          }.width('100%').height('100%')
+        }.tabBar(this.tabBuilder(8, 'l3'))
+        TabContent() {
+          Column(){
+            List({initialIndex: 0 }) {
+              ForEach([0, 1, 2, 3], (item: number) => {
+                ListItem() {
+                  Row(){
+                    Text('' + item)
+                      .width('40%').height(40).fontSize(16)
+                      .textAlign(TextAlign.Center).borderRadius(10).backgroundColor(Color.Green)
+                    Text('' + item)
+                      .width('40%').height(40).fontSize(16)
+                      .textAlign(TextAlign.Center).borderRadius(10).backgroundColor(Color.Green)
+                      .margin({left:"30vp"})
+                  }
+                }.margin({top:52, bottom:90})
+              }, (item: string) => item)
+            }
+            .listDirection(Axis.Vertical) // Arrangement direction
+            .scrollBar(BarState.Off)
+            .edgeEffect(EdgeEffect.Spring) // Set the edge scrolling effect to Spring.
+          }.width('100%').height('100%')
+        }.tabBar(this.tabBuilder(9, 'l4'))
+        TabContent() {
+          Column(){
+            Scroll(){
+              Column(){
+                Image($r('app.media.Sample'))
+                  .width(220).height(250).margin({top:"56vp"})
+                Text('FadingEdge: ' + (this.FadingEdgeAttr ? 'true' : 'false'))
+                Text('BarOverlap: '+ (this.BarOverlapAttr ? 'true' : 'false'))
+                Text('BarBackgroundColor: ' + this.BarBackgroundColorAttr)
+                Text('BarBackgroundBlurStyle: ' + this.BarBackgroundBlurStyleAttr)
+                Text('EdgeEffect: ' + this.EdgeEffectAttr)
+                Image($r('app.media.Sample'))
+                  .width(220).height(242).margin({bottom: "100vp"})
+
+              }
+            }
+            .edgeEffect(EdgeEffect.Spring)
+            .scrollBar(BarState.Off)
+          }.width('100%').height('100%')
+
+        }.tabBar(this.tabBuilder(10, 's3'))
+        TabContent() {
+          Column(){
+            Scroll(){
+              Column(){
+                Image($r('app.media.Sample'))
+                  .width(220).height(250).margin({top:"52vp"})
+                Text('FadingEdge: ' + (this.FadingEdgeAttr ? 'true' : 'false'))
+                Text('BarOverlap: '+ (this.BarOverlapAttr ? 'true' : 'false'))
+                Text('BarBackgroundColor: ' + this.BarBackgroundColorAttr)
+                Text('BarBackgroundBlurStyle: ' + this.BarBackgroundBlurStyleAttr)
+                Text('EdgeEffect: ' + this.EdgeEffectAttr)
+                Image($r('app.media.Sample'))
+                  .width(220).height(242).margin({bottom: "100vp"})
+
+              }
+            }
+            .edgeEffect(EdgeEffect.Spring)
+            .scrollBar(BarState.Off)
+          }.width('100%').height('100%')
+
+        }.tabBar(this.tabBuilder(11, 's4'))
+        TabContent() {
+          Column(){
+            Grid() {
+              ForEach(['0', '1'], (day: string) => {
+                ForEach(['0', '1', '2', '3', '4'], (day: string) => {
+                  GridItem() {
+                    Text(day)
+                      .fontSize(16)
+                      .backgroundColor(0xF9CF93)
+                      .width('100%')
+                      .height(210)
+                      .textAlign(TextAlign.Center)
+                  }.margin({top:56, bottom:80})
+                }, (day: string) => day)
+              }, (day: string) => day)
+            }
+            .columnsTemplate('1fr 1fr 1fr 1fr 1fr')
+            .columnsGap(10)
+            .rowsGap(30)
+            .edgeEffect(EdgeEffect.Spring)
+            .scrollBar(BarState.Off)
+          }.width('100%').height('100%')
+        }.tabBar(this.tabBuilder(12, 'g3'))
+        TabContent() {
+          Column(){
+            Grid() {
+              ForEach(['0', '1', '2', '3'], (day: string) => {
+                ForEach(['0', '1', '2', '3', '4'], (day: string) => {
+                  GridItem() {
+                    Text(day)
+                      .fontSize(4)
+                      .backgroundColor(0xF9CF93)
+                      .width('100%')
+                      .height(6)
+                      .textAlign(TextAlign.Center)
+                  }.margin({top:52, bottom:96})
+                }, (day: string) => day)
+              }, (day: string) => day)
+            }
+            .columnsTemplate('1fr 1fr 1fr 1fr 1fr')
+            .columnsGap(10)
+            .rowsGap(40)
+            .edgeEffect(EdgeEffect.Spring)
+            .scrollBar(BarState.Off)
+          }.width('100%').height('100%')
+        }.tabBar(this.tabBuilder(13, 'g4'))
+        TabContent() {
+          Column() {
+            WaterFlow() {
+              LazyForEach(this.dataSource, (item: number) => {
+                FlowItem() {
+                  Column() {
+                    Text("N" + item).fontSize(12).height('16')
+                    Image('res/waterFlowTest(' + item % 5 + ').jpg')
+                  }
+                }.margin({top:56, bottom:57})
+                .width('100%')
+                .height(this.itemHeightArray[item % 100])
+                .backgroundColor(this.colors[item % 5])
+              }, (item: string) => item)
+            }
+            .columnsTemplate('repeat(auto-fill,80)')
+            .columnsGap(10)
+            .rowsGap(30)
+            .padding({left:5})
+            .backgroundColor(0xFAEEE0)
+            .edgeEffect(EdgeEffect.Spring)
+          }.width('100%').height('100%')
+        }.tabBar(this.tabBuilder(14, 'w3'))
+        TabContent() {
+          Column() {
+            WaterFlow() {
+              LazyForEach(this.dataSource, (item: number) => {
+                FlowItem() {
+                  Column() {
+                    Text("N" + item).fontSize(12).height('16')
+                    Image('res/waterFlowTest(' + item % 5 + ').jpg')
+                  }
+                }.margin({top:52, bottom:62})
+                .width('100%')
+                .height(this.itemHeightArray[item % 100])
+                .backgroundColor(this.colors[item % 5])
+              }, (item: string) => item)
+            }
+            .columnsTemplate('repeat(auto-fill,80)')
+            .columnsGap(10)
+            .rowsGap(30)
+            .padding({left:5})
+            .backgroundColor(0xFAEEE0)
+            .edgeEffect(EdgeEffect.Spring)
+          }.width('100%').height('100%')
+        }.tabBar(this.tabBuilder(15, 'w4'))
       }
       .vertical(this.VerticalAttr === 'true'? true : false)
       .scrollable(this.ScrollableAttr === 'true'? true : false)
