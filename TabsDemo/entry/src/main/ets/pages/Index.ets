@@ -114,6 +114,19 @@ struct Index {
         return 0; // Default to the first option
     }
   }
+  getBarPosition(): number {
+    switch (this.BarPositionAttr) {
+      case 'Start':
+        return 0;
+      case 'End':
+        return 1;
+      case 'undefined':
+        return 2;
+      default:
+        return 1; // Default to the first option
+    }
+  }
+
   getEdgeEffectIndex(): number {
     switch (this.EdgeEffectAttr) {
       case 'Spring':
@@ -124,6 +137,51 @@ struct Index {
         return 2;
       default:
         return 0; // Default to the first option
+    }
+  }
+  getDividerColorAttr(): number {
+    switch (this.DividerColorAttr) {
+      case '#33182431':
+        return 0;
+      case '#FF0000':
+        return 1;
+      case 'undefined':
+        return 2;
+      case 'None':
+        return 3;
+      default:
+        return 1; // Default to the first option
+    }
+  }
+
+  getBarBackgroundColorAttr(): number {
+    switch (this.BarBackgroundColorAttr) {
+      case "#00FFFFFF":
+        return 0;
+      case "#88888888":
+        return 1;
+      case "#ADD8E6":
+        return 2;
+      case 'undefined':
+        return 3;
+      case 'None':
+        return 4;
+      default:
+        return 0; // Default to the first option
+    }
+  }
+  getScrollableAttr(): number {
+    switch (this.ScrollableAttr) {
+      case "false":
+        return 0;
+      case "true":
+        return 1;
+      case 'undefined':
+        return 2;
+      case 'None':
+        return 3;
+      default:
+        return 1; // Default to the first option
     }
   }
 
@@ -154,8 +212,9 @@ struct Index {
             Column() {
               Text("BarPosition")
               Select([{ value: "Start" },
-                { value: "End" }])
-                .selected(this.BarPositionAttr === 'End' ? 1 : 0)
+                { value: "End" },
+                { value: "undefined" }])
+                .selected(this.getBarPosition())
                 .value(this.BarPositionAttr)
                 .onSelect((index: number, text?: string | undefined) => {
                   this.BarPositionAttr = text
@@ -165,8 +224,10 @@ struct Index {
             Column() {
               Text("Scrollable")
               Select([{ value: "false" },
-                { value: "true" }])
-                .selected(this.ScrollableAttr === 'true' ? 1 : 0)
+                { value: "true" },
+                { value: "undefined" },
+              { value: "None" }])
+                .selected(this.getScrollableAttr())
                 .value(this.ScrollableAttr)
                 .onSelect((index: number, text?: string | undefined) => {
                   this.ScrollableAttr = text
@@ -274,8 +335,10 @@ struct Index {
               Column() {
                 Text("Color")
                 Select([{ value: "#33182431" },
-                  { value: "#FF0000" }])
-                  .selected(this.DividerColorAttr === '#33182431' ? 0 : 1)
+                  { value: "#FF0000" },
+                  { value: "undefined" },
+                  { value: "None" }])
+                  .selected(this.getDividerColorAttr())
                   .value(this.DividerColorAttr)
                   .onSelect((index: number, text?: string) => {
                     if (text) {
@@ -325,8 +388,11 @@ struct Index {
             Column() {
               Text("BarBackgroundColor")
               Select([{ value: "#00FFFFFF" },
-                { value: "#88888888" }])
-                .selected(this.BarBackgroundColorAttr === "#00FFFFFF" ? 0 : 1)
+                { value: "#88888888" },
+                { value: "#ADD8E6" },
+                { value: "undefined" },
+                { value: "None" }])
+                .selected(this.getBarBackgroundColorAttr())
                 .value(this.BarBackgroundColorAttr)
                 .onSelect((index: number, text?: string | undefined) => {
                   this.BarBackgroundColorAttr = text

@@ -67,6 +67,7 @@ struct Index {
   @State minSize: number = 80
   @State maxSize: number = 100
   @State colors: number[] = [0xFFC0CB, 0xDA70D6, 0x6B8E23, 0x6A5ACD, 0x00FFFF, 0x00FF7F]
+  @State ifToggle: boolean = true
   dataSource: WaterFlowDataSource = new WaterFlowDataSource()
   private itemWidthArray: number[] = []
   private itemHeightArray: number[] = []
@@ -90,6 +91,8 @@ struct Index {
         return BarPosition.End
       case 'Start':
         return BarPosition.Start
+      case 'undefined':
+        return undefined
       default:
         return undefined
     }
@@ -171,14 +174,27 @@ struct Index {
     if (this.DividerAttr == false) {
       return undefined
     }
-    else{
-
-      return {
-        strokeWidth: this.DividerStrokeWidthAttr,
-        color: this.DividerColorAttr,
-        startMargin: this.DividerStartMarginAttr,
-        endMargin: this.DividerEndMarginAttr
+    else {
+      let dividerObj: DividerStyle = {strokeWidth: this.DividerStrokeWidthAttr}
+      if (this.DividerColorAttr == "undefined"){
+        dividerObj.color = undefined
+      } else if (this.DividerColorAttr != "None"){
+        dividerObj.color = this.DividerColorAttr
       }
+
+      if (this.DividerStartMarginAttr == "undefined"){
+        dividerObj.startMargin = undefined
+      } else if (this.DividerStartMarginAttr != "None"){
+        dividerObj.startMargin = this.DividerStartMarginAttr
+      }
+
+      if (this.DividerEndMarginAttr == "undefined"){
+        dividerObj.endMargin = undefined
+      } else if (this.DividerEndMarginAttr != "None"){
+        dividerObj.endMargin = this.DividerEndMarginAttr
+      }
+
+      return dividerObj
     }
   }
 
@@ -240,6 +256,33 @@ struct Index {
         return undefined
     }
   }
+  isNotNone(attr:string): boolean {
+    if (attr == "None"){
+      return false
+    } else {
+      return true
+    }
+  }
+
+  getBarBackgroundColor():ResourceColor | undefined {
+    if (this.BarBackgroundColorAttr != "undefined") {
+      return this.BarBackgroundColorAttr
+    } else {
+      return undefined
+    }
+  }
+  getScrollable():boolean | undefined {
+    if (this.ScrollableAttr != "undefined") {
+      if (this.ScrollableAttr == 'true'){
+        return true
+      } else {
+        return false
+      }
+    } else {
+      return undefined
+    }
+  }
+
   @Builder tabBuilder(index: number, name: string) {
     Column() {
       Text(name)
@@ -615,18 +658,68 @@ struct Index {
             .edgeEffect(EdgeEffect.Spring)
           }.width('100%').height('100%')
         }.tabBar(this.tabBuilder(15, 'w4'))
+        TabContent() {
+          Column(){
+            Toggle({type:ToggleType.Switch, isOn:this.ifToggle})
+              .onChange((isOn: boolean) => {
+                this.ifToggle = isOn
+              })
+            if (this.ifToggle) {
+              List({initialIndex: 0 }) {
+                ForEach(this.arr, (item: number) => {
+                  ListItem() {
+                    Row(){
+                      Text('1' + item)
+                        .width('40%').height(40).fontSize(16)
+                        .textAlign(TextAlign.Center).borderRadius(10).backgroundColor(Color.Green)
+                      Text('1' + item)
+                        .width('40%').height(40).fontSize(16)
+                        .textAlign(TextAlign.Center).borderRadius(10).backgroundColor(Color.Green)
+                        .margin({left:"30vp"})
+                    }
+                  }.margin({bottom:"77vp"})
+                }, (item: string) => item)
+              }
+              .listDirection(Axis.Vertical) // Arrangement direction
+              .scrollBar(BarState.Off)
+              .edgeEffect(EdgeEffect.Spring) // Set the edge scrolling effect to Spring.
+            }
+            else {
+              List({initialIndex: 0 }) {
+                ForEach(this.arr, (item: number) => {
+                  ListItem() {
+                    Row(){
+                      Text('2' + item)
+                        .width('40%').height(40).fontSize(16)
+                        .textAlign(TextAlign.Center).borderRadius(10).backgroundColor(Color.Green)
+                      Text('2' + item)
+                        .width('40%').height(40).fontSize(16)
+                        .textAlign(TextAlign.Center).borderRadius(10).backgroundColor(Color.Green)
+                        .margin({left:"30vp"})
+                    }
+                  }.margin({bottom:"77vp"})
+                }, (item: string) => item)
+              }
+              .listDirection(Axis.Vertical) // Arrangement direction
+              .scrollBar(BarState.Off)
+              .edgeEffect(EdgeEffect.Spring) // Set the edge scrolling effect to Spring.
+            }
+
+          }.width('100%').height('100%')
+
+        }.tabBar(this.tabBuilder(16, 'f'))
       }
       .vertical(this.VerticalAttr === 'true'? true : false)
-      .scrollable(this.ScrollableAttr === 'true'? true : false)
+      .scrollable(this.isNotNone(this.ScrollableAttr) && this.getScrollable())
       .barMode(this.getBarMode(),this.getScrollableBarModeOptions())
       .barWidth(this.getBarWidth())
       .barHeight(this.getBarHeight())
-      .animationDuration(this.getAnimationDuration())
+      .animationDuration(this.isNotNone(this.AnimationDurationAttr) && this.getAnimationDuration())
       .animationMode(this.getAnimationMode())
       .divider(this.getDivider())
       .fadingEdge(this.FadingEdgeAttr)
       .barOverlap(this.BarOverlapAttr)
-      .barBackgroundColor(this.BarBackgroundColorAttr)
+      .barBackgroundColor(this.isNotNone(this.BarBackgroundColorAttr) && this.getBarBackgroundColor())
       .barBackgroundBlurStyle(this.getBarBackgroundBlurStyle())
       .barGridAlign(this.getBarGridAlign())
       .edgeEffect(this.getEdgeEffect())
