@@ -1,0 +1,12 @@
+{
+  "src": [
+    "pages/Index",
+    "pages/Arrow",
+    "pages/Button",
+    "pages/Checkbox",
+    "pages/Icon",
+    "pages/Image",
+    "pages/Radio",
+    "pages/Text"
+  ]
+}
